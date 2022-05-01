@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres:12.6-alpine
+    container_name: postgres
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=hoolieats
+      - POSTGRES_DB=hoolieats
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: pg_isready -U hoolieats -d hoolieats -h localhost -q
+
+  hoolieats-st:
+    build:
+      context: .
+    container_name: hoolieats-st
+    environment: 
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=hoolieats
+      - POSTGRES_DATABASE=hoolieats
+    ports: 
+      - 8501:8501
+    depends_on: 
+      - postgres
+    healthcheck:
+      test: curl -s localhost:8501/healthz
+
+volumes:
+  postgres-volume:
