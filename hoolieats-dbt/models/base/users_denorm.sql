@@ -8,7 +8,9 @@ with users_joined as (
 
 select
     userID as user_id,
-    * exclude (userID, Rcuisine, Upayment),
     Rcuisine as cuisine,
-    Upayment as payment
+    Upayment as payment,
+    latitude as user_latitude,
+    longitude as user_longitude,
+    * exclude (userID, Rcuisine, Upayment, latitude, longitude)
 from users_joined

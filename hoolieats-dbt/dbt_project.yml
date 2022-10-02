@@ -35,5 +35,5 @@ models:
   hoolieats:
     base:
       +materialized: table
-    aggregates:
-      +materialized: view
+    clean:
+      +materialized: table

@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: ratings
+    columns:
+      - name: upsert_key
+        tests:
+          - unique
+          - not_null
+      - name: user_id
+        tests:
+          - not_null
+      - name: place_id
+        tests:
+          - not_null
+
+  - name: restaurants
+    columns:
+      - name: place_id
+        tests:
+          - not_null
+
+  - name: users
+    columns:
+      - name: user_id
+        tests:
+          - not_null

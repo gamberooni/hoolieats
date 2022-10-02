@@ -26,9 +26,9 @@ def main():
     # restaurants
     chefmozaccepts_df = pd.read_csv(chefmozaccepts_file)
     # simple transformation
-    chefmozaccepts_df["Rpayment"] = chefmozaccepts_df["Rpayment"].replace(
-        {"Visa": "VISA"}
-    )
+    # chefmozaccepts_df["Rpayment"] = chefmozaccepts_df["Rpayment"].replace(
+    #     {"Visa": "VISA"}
+    # )
     chefmozaccepts_df = chefmozaccepts_df.fillna(value="N/A")
     chefmozaccepts_df.to_sql(
         "chefmozaccepts",
@@ -52,18 +52,18 @@ def main():
     chefmozhours4_df = (
         chefmozhours4_df.drop_duplicates()
     )  # there are duplicates in the csv
-    chefmozhours4_df["days"] = chefmozhours4_df["days"].replace(
-        {"Mon;Tue;Wed;Thu;Fri;": "Mon-Fri"}
-    )
-    chefmozhours4_df[["hours", "days"]] = chefmozhours4_df[["hours", "days"]].replace(
-        {";": ""}, regex=True
-    )
+    # chefmozhours4_df["days"] = chefmozhours4_df["days"].replace(
+    #     {"Mon;Tue;Wed;Thu;Fri;": "Mon-Fri"}
+    # )
+    # chefmozhours4_df[["hours", "days"]] = chefmozhours4_df[["hours", "days"]].replace(
+    #     {";": ""}, regex=True
+    # )
     chefmozhours4_df = (
         chefmozhours4_df.groupby(["placeID", "days"])["hours"]
         .agg("".join)
         .reset_index()
     )
-    chefmozhours4_df["hours"] = chefmozhours4_df["hours"].map(split_hours)
+    # chefmozhours4_df["hours"] = chefmozhours4_df["hours"].map(split_hours)
     chefmozhours4_df.to_sql(
         "chefmozhours4",
         engine,

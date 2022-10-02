@@ -1,14 +1,17 @@
-FROM python:3.9.5-slim
+FROM python:3.8.14-slim
 WORKDIR /app
-COPY requirements.txt .
+COPY requirements-extra.txt .
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install build-essential libpq-dev curl \
-    && pip install --no-cache-dir -r requirements.txt \
-    && apt-get remove -y build-essential libpq-dev \
+    # && apt-get -y --no-install-recommends install build-essential curl \
+    && pip install --no-cache-dir poetry==1.2.1 \
+    && poetry install \
+    && pip install -r requirements-extra.txt \
+    # && apt-get remove -y build-essential \
     && apt-get clean \
     && rm -rf /var/cache/apt/lists 
-COPY src .
-COPY RCdata RCdata
+COPY hoolieats hoolieats
+COPY hoolieats-dbt hoolieats-dbt
+
 EXPOSE 8501
 ENTRYPOINT [ "streamlit", "run" ]
-CMD [ "./app.py" ]
+CMD [ "app.py" ]

@@ -88,20 +88,20 @@ SELECT
 GROUP BY budget;
 """
 
-customer_age = """
-SELECT
-	age
-FROM cview;
-"""
+# customer_age = """
+# SELECT
+# 	age
+# FROM cview;
+# """
 
-customer_bmi_status = """
-SELECT
-	COUNT(*),
-	bmi_status
-FROM cview
-GROUP BY bmi_status
-ORDER BY array_position(array['N/A','underweight','normal','overweight','obese'], cview.bmi_status);
-"""
+# customer_bmi_status = """
+# SELECT
+# 	COUNT(*),
+# 	bmi_status
+# FROM cview
+# GROUP BY bmi_status
+# ORDER BY array_position(array['N/A','underweight','normal','overweight','obese'], cview.bmi_status);
+# """
 
 customer_religion = """
 SELECT
