@@ -1,0 +1,7 @@
+hoolieats:
+  target: prod
+  outputs:
+    prod:
+      type: duckdb
+      path: 'hoolieats.duckdb'
+ 
