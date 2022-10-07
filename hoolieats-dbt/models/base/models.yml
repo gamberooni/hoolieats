@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: restaurants_denorm
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('geoplaces2')
+    columns:
+      - name: place_id
+        tests:
+          - not_null
+          - unique
+
+  - name: users_denorm
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('userprofile')
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+          - unique

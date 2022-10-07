@@ -1,6 +1,6 @@
 with base as (
     select
-        * exclude (operating_days, operating_hours),
+        * exclude (operating_days),
         case operating_days
             when 'Mon;Tue;Wed;Thu;Fri' then 'Weekdays'
             else operating_days
@@ -23,6 +23,9 @@ avg_ratings as (
 )
 
 select
-    *
+    *,
+    PERCENT_RANK() OVER (
+        ORDER BY avg_rating DESC, avg_food_rating DESC, avg_service_rating DESC, rating_count DESC
+    ) AS pcrnk
 from base
 inner join avg_ratings using (place_id)
