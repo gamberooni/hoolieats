@@ -1,27 +1,4 @@
-from dataclasses import dataclass
 from typing import List
-from typing import Optional
-
-from duckdb import DuckDBPyConnection
-from pandas import DataFrame
-
-
-class ReturnType:
-    PANDAS_DF = "df"
-    NUMPY_ARRAY = "numpy"
-
-
-@dataclass
-class QueryExecutor:
-    connection: DuckDBPyConnection
-
-    def execute(
-        self, sql: str, return_type: Optional[ReturnType] = ReturnType.PANDAS_DF
-    ) -> DataFrame:
-        if return_type == ReturnType.PANDAS_DF:
-            return self.connection.execute(sql).fetchdf()
-        if return_type == ReturnType.NUMPY_ARRAY:
-            return self.connection.execute(sql).fetchnumpy()
 
 
 def calc_diff(
@@ -44,18 +21,22 @@ def calc_diff(
                 ((df["rating_type"] == rating_type) & (df[categorical_col] == c))
             )
 
-    # use the dict to calculate the expected rating count for each rating value (0, 1, 2) and category
-    # using cuisines df as example, the categorical column is "offered" and the categories are True, False
+    # use the dict to calculate the expected rating count for each rating value (0, 1, 2) & category
+    # using cuisines df as example, the categorical column is "offered"
+    #   and the categories are True/False
     # the combination is - [rating type, rating value, categories]
     # [rating, 0, False]
     # [rating, 1, False]
     # [rating, 2, False]  - these 3 rows belong to a group
-    #   (i.e. should follow the expected distribution for rating type = "rating" as shown in the pie chart)
+    #   i.e. should follow the expected distribution for rating type = "rating"
+    #   as shown in the pie chart
     # [rating, 0, True]
     # [rating, 1, True]
-    # [rating, 2, True]  - these 3 rows belong to another group - should follow the rating type = "rating" pattern too
+    # [rating, 2, True]  - these 3 rows belong to another group
+    #   should follow the rating type = "rating" pattern too
     # ...
-    # using the original df, for rating_type = "rating", filter out the rows with rating value = 0 and category = False
+    # using the original df, for rating_type = "rating", filter out the rows with rating value = 0
+    #   and category = False
     # then assign the expected percentage on the row where rating value = 0 and category = False
     # then calculate the expected count based on the sum of all the rows where
     #   rating type = "rating", rating value = 0, 1, 2 and category = False

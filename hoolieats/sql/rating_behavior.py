@@ -114,10 +114,10 @@ smoking_allowed = """
 SELECT COUNT(*), rb.rsmoking_allowed, v.*
 FROM rbview AS rb,
 LATERAL(
-	VALUES
-		('rating', rb.rating),
-		('food', rb.food_rating),
-		('service', rb.service_rating)
+    VALUES
+        ('rating', rb.rating),
+        ('food', rb.food_rating),
+        ('service', rb.service_rating)
 ) AS v (rating_type, rating_value)
 GROUP BY rb.rsmoking_allowed, v.rating_type, v.rating_value
 ORDER BY v.rating_type, v.rating_value, rb.rsmoking_allowed;
@@ -127,13 +127,18 @@ price_budget_matched = """
 SELECT COUNT(*), rb.price_budget_matched, v.*
 FROM rbview AS rb,
 LATERAL(
-	VALUES
-		('rating', rb.rating),
-		('food', rb.food_rating),
-		('service', rb.service_rating)
+    VALUES
+        ('rating', rb.rating),
+        ('food', rb.food_rating),
+        ('service', rb.service_rating)
 ) AS v (rating_type, rating_value)
 GROUP BY rb.price_budget_matched, v.rating_type, v.rating_value
-ORDER BY v.rating_type, v.rating_value, array_position(array['N/A', 'false', 'true'], rb.price_budget_matched);
+ORDER BY
+    v.rating_type,
+    v.rating_value,
+    array_position(array['N/A', 'false', 'true'],
+    rb.price_budget_matched
+);
 """
 
 ralcohol = """
